@@ -37,6 +37,8 @@ import Profile from './Screen/Profile';
 import { useEffect} from "react";
 import PushNotification from "react-native-push-notification";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
+
+import salary  from './Screen/salary' 
 import VarificationScreen from './Screen/VarificationScreen';
 
 // storage
@@ -68,6 +70,9 @@ const App: () => React$Node = () => {
     <Stack.Navigator>
     
     
+    <Stack.Screen name="salary" component={salary} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center'}}/>
+
+
     
     {/* <Stack.Screen name="Varification" component={VarificationScreen}/> */}
     
