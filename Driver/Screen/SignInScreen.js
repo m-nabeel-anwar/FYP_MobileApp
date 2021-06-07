@@ -212,7 +212,7 @@ const SignInScreen = ({navigation}) =>
              }
              })
              .catch(err=>{
-             console.log(err)
+                Alert.alert('Opps!','Network Error..')
              })
  
  

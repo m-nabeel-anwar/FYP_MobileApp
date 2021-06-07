@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import FontAweasome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios'
 import md5 from 'md5';
-
+import {ActivityIndicator} from 'react-native';
 const UpdateProfile =({route,navigation})=> {
   
  
@@ -12,6 +12,8 @@ const UpdateProfile =({route,navigation})=> {
 
 const [data,setdata]=useState({Name:'',Contact:'',Email:'',Cnic:''})
 const [error,seterror]=useState({Name:'',Contact:'',Email:'',Cnic:''})
+const[loading,isloading]=useState(true)
+  const [loadingerror,setloadingerror]=useState("Loading...")
 
 
 useEffect(()=>{
@@ -19,9 +21,12 @@ useEffect(()=>{
     .then(res=>{
        
         setdata(res.data)
+        isloading(false)
       
     })
     .catch(err=>{
+        isloading(true)
+        setloadingerror("Network Error...")
         console.log(err)
     })
     
@@ -135,23 +140,29 @@ var value=
     Contact:data.Contact
 
 };
-
+            isloading(true)
+            setloadingerror("Updating...")
 axios.put('http://127.0.0.1:8000/getuserdetail',value)
 .then(req=>{
 if(req.data.Check==='True')
 {
+    isloading(false)
+    // setloadingerror("Network Error...")
     setdata({...data,Name:'',Contact:'',Email:'',Cnic:''})
     Alert.alert('Alert..!','Your Info Updated',[{text:'Next',onPress:()=>navigation.navigate('Home')}])
     
 }
 else
 {
+    isloading(false)
     setdata({...data,Name:'',Contact:'',Email:'',Cnic:''})
     Alert.alert('Error on update')
 
 }
 })
 .catch(err=>{
+    isloading(true)
+    setloadingerror("Network Error...")
 console.log(err)
 })
 
@@ -168,6 +179,13 @@ else
   
     return (
 
+        <View style={{flex:1}}>
+        { loading ?  
+      
+      <View  style={styles.laoderstyle}>
+          <ActivityIndicator size='large' width='90%' color='black'/>
+          <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+      </View>:
 <View style={styles.container}>
 
 
@@ -279,6 +297,7 @@ else
                           </TouchableOpacity>
 </Animatable.View>          
 
+ </View>}
  </View>
   );
 }
@@ -371,5 +390,14 @@ const styles = StyleSheet.create({
                   fontWeight: 'bold'
                   
               },
-    
+
+              laoderstyle:{
+              height:'100%',
+              width:'100%',
+              alignItems:'center',
+              justifyContent:"center",
+              backgroundColor:'#D6DBDF'
+              
+              
+              }
 })

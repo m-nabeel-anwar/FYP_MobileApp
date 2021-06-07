@@ -7,6 +7,7 @@ import axios from 'axios'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from '@react-native-community/geolocation';
+import {ActivityIndicator} from 'react-native';
 // import Marker from 'react-native-maps';
 const Routs =({route,navigation})=> {
 
@@ -17,6 +18,9 @@ const Routs =({route,navigation})=> {
 
 const [data,setdata]=useState([''])
 const [pointer,setpointer]=useState([''])
+
+const[loading,isloading]=useState(true)
+const [loadingerror,setloadingerror]=useState("Loading...")
 useEffect(()=>{
 
   axios.get('http://127.0.0.1:8000/showbusroute?Name='+Name)
@@ -25,6 +29,7 @@ useEffect(()=>{
   
 setdata(req.data)
 setpointer(req.data)
+isloading(false)
 // console.log(req.data)
 
 
@@ -33,7 +38,10 @@ setpointer(req.data)
 })
 
 
+
 .catch((err)=>{
+  setloadingerror("Network Error")
+  isloading(true)
   console.log(err)
 })
 
@@ -48,6 +56,17 @@ setpointer(req.data)
 
 // console.log(data)
   return (
+
+
+    <View style={{flex:1}}>
+    { loading ?  
+  
+  <View  style={styles.laoderstyle}>
+      <ActivityIndicator size='large' width='90%' color='black'/>
+      <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+  </View>:
+
+
       <View style={styles.container}>
 
 
@@ -118,9 +137,9 @@ style={{height:'100%',width:'100%'}}
 
     <TouchableOpacity  style={styles.liststyle} >
   <View style={{flexDirection:'row'}}>
-<Image source={require('../Images/pin.png')} style={{height:25,width:20,marginLeft:'2%',margin:5}} resizeMode="stretch"/>
+<Image source={require('../Images/pin.png')} style={{height:25,width:21,marginLeft:'2%',margin:5}} resizeMode="stretch"/>
 
-<Text style={{fontSize:20,color:'#17202A',marginTop:10,marginEnd:8}}>{item.Name.split(',')[0]}</Text>
+<Text style={{fontSize:20,color:'#17202A',marginTop:10,marginEnd:"8%"}}>{item.Name.split(',')[0]}</Text>
 
 </View>
 <View style={{ width: '80%', height: 2, backgroundColor: '#943126',marginLeft:'11%',marginBottom:2 }} />
@@ -130,6 +149,8 @@ style={{height:'100%',width:'100%'}}
 
 
     </View>
+      </View>
+ }
 
       </View>
   );
@@ -166,8 +187,8 @@ const styles = StyleSheet.create({
      // alignItems:'center',
       backgroundColor: '#FBFCFC',         
       borderRadius:15,
-      width:'90%',
-      marginLeft:"5%",
+      width:'95%',
+      marginLeft:"2%",
       marginTop:3,
       marginBottom:3,
 
@@ -201,4 +222,13 @@ const styles = StyleSheet.create({
       backgroundColor:'#007AFF'
 
     },
+laoderstyle:{
+height:'100%',
+width:'100%',
+alignItems:'center',
+justifyContent:"center",
+backgroundColor:'#D6DBDF'
+
+
+}
     })

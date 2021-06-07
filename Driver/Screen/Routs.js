@@ -6,6 +6,9 @@ import axios from 'axios'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import {ActivityIndicator} from 'react-native';
+
 const Routs =({route,navigation})=> {
 
  
@@ -18,6 +21,9 @@ const Routs =({route,navigation})=> {
 const [dataa,setdataa]=useState([])
 const [location,setlocation]=useState({Lat:parseFloat(24.8607),Lng:parseFloat(67.0011)})
 
+const[loading,isloading]=useState(true)
+const [loadingerror,setloadingerror]=useState("Loading...")
+
 useEffect(()=>{
 
 
@@ -25,7 +31,7 @@ useEffect(()=>{
 .then((req)=>{
   
 setdataa(req.data)
-
+isloading(false)
 Geolocation.getCurrentPosition((position)=>{
 
   setlocation({...location,Lat:parseFloat(position.coords.latitude),Lng:parseFloat(position.coords.longitude)})
@@ -36,6 +42,8 @@ Geolocation.getCurrentPosition((position)=>{
 })
 
 .catch((err)=>{
+  isloading(true)
+  setloadingerror("Network Error...")
   console.log(err)
 })
 
@@ -45,6 +53,15 @@ Geolocation.getCurrentPosition((position)=>{
 
 // console.log(data)
   return (
+
+    <View style={{flex:1}}>
+    { loading ?  
+  
+  <View  style={styles.laoderstyle}>
+      <ActivityIndicator size='large' width='90%' color='black'/>
+      <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+  </View>:
+
       <View style={styles.container}>
 
 
@@ -112,6 +129,8 @@ coordinate={{ latitude : parseFloat(marker.Lat) , longitude : parseFloat(marker.
     </View>
 
       </View>
+      }
+      </View>
   );
 }
 
@@ -158,4 +177,14 @@ const styles = StyleSheet.create({
       shadowRadius: 2,  
       elevation:10,
     },
+
+    laoderstyle:{
+    height:'100%',
+    width:'100%',
+    alignItems:'center',
+    justifyContent:"center",
+    backgroundColor:'#D6DBDF'
+    
+    
+    }
     })

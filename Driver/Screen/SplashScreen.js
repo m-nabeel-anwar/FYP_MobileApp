@@ -75,7 +75,7 @@ const Login_Varification = async()=>{
     Status = await AsyncStorage.getItem('Status')
     if(uid !=null && Status !=null)
     {
-      console.log(uid+" "+Status)
+      // console.log(uid+" "+Status)
       navigation.navigate('Home',{'uid':uid,'Status':Status})
       // navigation.navigate('signin')
     }

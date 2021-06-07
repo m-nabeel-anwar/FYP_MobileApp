@@ -42,13 +42,12 @@
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
+
 <!-- For map -->
 
-
-    
      <meta-data
        android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyCyE77cIph539NUUUYaCJlVReYoJ4_MJCg"/> 
+     android:value="AIzaSyB3d8K8RS7KIo2AYUvDWsL6ip6kAdP6lFs"/> 
   
    <!-- You will also only need to add this uses-library tag -->
    <uses-library android:name="org.apache.http.legacy" android:required="false"/> 

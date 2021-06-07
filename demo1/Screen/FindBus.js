@@ -6,12 +6,16 @@ import {useState,useEffect} from 'react'
 import axios from 'axios'
 import FontAweasome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
+import {ActivityIndicator} from 'react-native';
 const FindBus =({navigation})=> {
 
     const [data,setdata]=useState([''])
     const [postdata,setpostdata]=useState([''])
     const [search,setsearch]=useState("")
     const [error,seterror]=useState("")
+    
+    const[loading,isloading]=useState(true)
+    const [loadingerror,setloadingerror]=useState("Loading...")
 
 
 // const da=5
@@ -23,8 +27,11 @@ useEffect(()=>{
         //  console.log(res.data)
         setdata(res.data)
         setpostdata(res.data)
+        isloading(false)
     })
     .catch(err=>{
+        setloadingerror("Network Error")
+        isloading(true)
         console.log(err)
     })
     
@@ -50,6 +57,14 @@ setsearch(value)
 
 
     return (
+
+        <View style={{flex:1}}>
+  { loading ?  
+
+<View  style={styles.laoderstyle}>
+    <ActivityIndicator size='large' width='90%' color='black'/>
+    <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+</View>:
 
         <View style={styles.container}>
 
@@ -113,10 +128,9 @@ setsearch(value)
 )}/>
 
 </View>
-            
-
-
         </View>
+}
+</View>
     );
 
 };
@@ -243,8 +257,17 @@ boxlist:
   borderTopLeftRadius:20,
   borderBottomLeftRadius:20,
   borderBottomRightRadius:20
-}
+},
 
+laoderstyle:{
+height:'100%',
+width:'100%',
+alignItems:'center',
+justifyContent:"center",
+backgroundColor:'#D6DBDF'
+
+
+}
 });
 
 

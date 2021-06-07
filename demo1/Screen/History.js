@@ -4,7 +4,7 @@ import { StyleSheet, Text, View ,TextInput, TouchableOpacity,Image,FlatList} fro
 import * as Animatable from 'react-native-animatable';
 import axios from 'axios'
 import FontAweasome from 'react-native-vector-icons/FontAwesome';
-
+import {ActivityIndicator} from 'react-native';
 const History =({route,navigation})=> {
 
   const { uid} = route.params;
@@ -12,6 +12,8 @@ const History =({route,navigation})=> {
 
   const [data,setdata]=useState([''])
 
+  const[loading,isloading]=useState(true)
+  const [loadingerror,setloadingerror]=useState("Loading...")
         
 
  useEffect(()=>{
@@ -20,9 +22,12 @@ const History =({route,navigation})=> {
             .then((request)=>
             {
               {request.data ? setdata(request.data) :null}
+              isloading(false)
 
             })
             .catch(()=>{
+              isloading(true)
+              setloadingerror("Network Error...")
               console.log(err)
             })
 
@@ -40,27 +45,40 @@ uid
   // console.log(value)
   // const after_delete= data.filter(item =>item.hid!= hid)
   //      setdata(after_delete)
-
+  isloading(true)
+  setloadingerror("Deleting...")
   axios.post('http://127.0.0.1:8000/deletehistroy',value)
   .then((res)=>{
 
     if(res.data.message==='deleted')
     {
+      isloading(false)
     const after_delete= data.filter(item =>item.hid!= hid)
     setdata(after_delete)
-    alert("One history deleted")
+    alert("History Deleted")
     }
 
   })
 
   .catch((eror)=>{
-console.log(eror)})
+              isloading(true)
+              setloadingerror("Network Error...")
+              console.log(eror)
+})
 }
 
 
 
 
   return (
+    <View style={{flex:1}}>
+    { loading ?  
+  
+  <View  style={styles.laoderstyle}>
+      <ActivityIndicator size='large' width='90%' color='black'/>
+      <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+  </View>:
+  
 
       <View style={styles.container}>
 
@@ -134,6 +152,7 @@ console.log(eror)})
             
           </Animatable.View>
 
+      </View>}
       </View>
   );
 
@@ -251,6 +270,16 @@ historyboxvalue:{
 borderColor:'#fff'
 
 },
+
+laoderstyle:{
+height:'100%',
+width:'100%',
+alignItems:'center',
+justifyContent:"center",
+backgroundColor:'#D6DBDF'
+
+
+}
 
 
 

@@ -2,7 +2,9 @@ import React ,{useState} from 'react';
 import { StyleSheet, Text, View , TouchableOpacity,Image} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import axios from 'axios'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage';
+
+import {ActivityIndicator} from 'react-native';
 const HomeScreen=({route,navigation})=>
 {
     const { uid} = route.params;
@@ -12,6 +14,8 @@ const HomeScreen=({route,navigation})=>
 
 const [data,setdata]=useState({})
 
+const[loading,isloading]=useState(false)
+const [loadingerror,setloadingerror]=useState("Loading...")
 
 const authentication =(value)=>
 {
@@ -73,16 +77,20 @@ const authentication =(value)=>
 
 const logoutuse=()=>{
 
+    isloading(true)
     axios.get('http://127.0.0.1:8000/Driverlogout?uid='+uid)
     .then((req)=>{
         if(req.data.Check==="True")
         {
             clear_storage() // clear local storage when logout 
+            isloading(false)
         navigation.navigate('Splash')
         }
  
     })
     .catch((err)=>{
+        isloading(true)
+        setloadingerror("Network Error...")
         console.log(err)
     })
 }
@@ -103,6 +111,14 @@ clear_storage=async()=>
 
 
     return(
+
+        <View style={{flex:1}}>
+        { loading ?  
+      
+      <View  style={styles.laoderstyle}>
+          <ActivityIndicator size='large' width='90%' color='black'/>
+          <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+      </View>:
 
 
         <View style={styles.container}>
@@ -126,7 +142,7 @@ clear_storage=async()=>
 <TouchableOpacity style={styles.box} onPress={e=>{authentication("Map")}}>     
                  <View style={[styles.innercontent,{backgroundColor:'#48C9B0'}]}>
                  <Image source={require('../Images/placeholder.png')} style={styles.imagees} resizeMode="stretch"/>
-                <Text>See Route</Text>
+                <Text>View Route</Text>
                 </View>
                 </TouchableOpacity>
                 
@@ -137,7 +153,7 @@ clear_storage=async()=>
 
                  <View style={[styles.innercontent,{backgroundColor:'#A04000'}]}>
                  <Image source={require('../Images/bus.png')} style={styles.imagees} resizeMode="stretch"/>
-                <Text>Find Area</Text>
+                <Text>Find Stops</Text>
                 </View>
 </TouchableOpacity>
 
@@ -149,14 +165,14 @@ clear_storage=async()=>
 
                     <View style={[styles.innercontent,{backgroundColor:'#808000'}]}>
                     <Image source={require('../Images/candidate.png')} style={styles.imagees} resizeMode="stretch"/>
-                    <Text>Account</Text>
+                    <Text>Profile</Text>
                     </View>
 
                     </TouchableOpacity>
 
                     {/*4*/}
                     
-                    <TouchableOpacity style={styles.box} >
+                    <TouchableOpacity style={styles.box} onPress={e=>{navigation.navigate('salary',{'uid':uid})}}>
 
                  <View style={[styles.innercontent,{backgroundColor:'#F4D03F'}]}>
                     <Image source={require('../Images/clock.png')} style={styles.imagees} resizeMode="stretch"/>
@@ -185,6 +201,7 @@ clear_storage=async()=>
 
                 </Animatable.View>
 
+        </View>}
         </View>
         
     );
@@ -276,8 +293,15 @@ shadowOffset:{height:2,width:2},
 shadowOpacity: 0.8,
 shadowRadius: 2,  
 elevation: 8,
-}
-
+},
+    laoderstyle:{
+    height:'100%',
+    width:'100%',
+    alignItems:'center',
+    justifyContent:"center",
+    backgroundColor:'#D6DBDF'
+  
+    }
 
 
 

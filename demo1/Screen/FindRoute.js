@@ -19,7 +19,7 @@ import axios from 'axios'
 import LinearGradient from 'react-native-linear-gradient';
 import FontAweasome from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
-
+import {ActivityIndicator} from 'react-native';
 const FindRoute=({route,navigation})=>
 {
   
@@ -27,7 +27,8 @@ const FindRoute=({route,navigation})=>
 
 ///////////////////////////////////////////
 
-
+const[loading,isloading]=useState(false)
+const [loadingerror,setloadingerror]=useState("Loading...")
 
 
 const [dataa,setdataa]=useState([])
@@ -161,10 +162,11 @@ const findbus2 =(query)=>
           From:query2,
           uid:uid
         }
-
+        isloading(true);
       axios.post('http://127.0.0.1:8000/routefinder',result)
       .then((req)=>{
-        
+
+        isloading(false);
       setdataa(req.data)
 
       if(req.data.length >0)
@@ -185,6 +187,8 @@ const findbus2 =(query)=>
       
       
       .catch((err)=>{
+        isloading(true);
+        setloadingerror("Network Error...")
         console.log(err)
       })
 
@@ -224,6 +228,14 @@ const buss2=findbus2(query2);
 const comp2 = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
 return(
+
+  <View style={{flex:1}}>
+  { loading ?  
+
+<View  style={styles.laoderstyle}>
+    <ActivityIndicator size='large' width='90%' color='black'/>
+    <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+</View>:
 
 <View  style={styles.container}>
 
@@ -293,7 +305,7 @@ yaha pay ham jab result ae ga find out ka to wo wala view render kar day gay yah
 <FontAweasome name="times-circle" color="black"  size={20} style={{marginLeft:'93%',marginTop:3}} />
 </TouchableOpacity>
 
-<View style={{ width: '50%', height: 4, backgroundColor: '#943126',marginLeft:'25%',marginBottom:5 }} />
+<View style={{ width: '51%', height: 4, backgroundColor: '#943126',marginLeft:'25%',marginBottom:5 }} />
 
 
 
@@ -305,7 +317,7 @@ keyExtractor = {(i)=>i.id.toString()}
 <TouchableOpacity  style={styles.liststyle} onPress={()=> {setQuery(item.item.Name),setShouldShow(false)}}>
   <View style={{flexDirection:'row'}}>
 <Image source={require('../Images/pin.png')} style={{height:22,width:20,marginLeft:'2%',margin:5}} resizeMode="stretch"/>
-<Text style={{fontSize:20,color:'#17202A',marginLeft:5,marginTop:10,marginEnd:18}}>{item.item.Name}</Text>
+<Text style={{fontSize:20,color:'#17202A',marginLeft:5,marginTop:10,marginEnd:'7.8%'}}>{item.item.Name}</Text>
 </View>
 <View style={{ width: '80%', height: 2, backgroundColor: '#943126',marginLeft:'11%',marginBottom:2 }} />
   </TouchableOpacity>
@@ -345,7 +357,7 @@ keyExtractor = {(i)=>i.id.toString()}
 <TouchableOpacity  style={styles.liststyle} onPress={()=> {setQuery2(item.item.Name),setShouldShow2(false)}}>
   <View style={{flexDirection:'row'}}>
 <Image source={require('../Images/pin.png')} style={{height:22,width:20,marginLeft:'2%',margin:5}} resizeMode="stretch"/>
-<Text style={{fontSize:20,color:'#17202A',marginLeft:5,marginTop:10,marginEnd:18}}>{item.item.Name}</Text>
+<Text style={{fontSize:20,color:'#17202A',marginLeft:5,marginTop:10,marginEnd:'7.8%'}}>{item.item.Name}</Text>
 </View>
 <View style={{ width: '80%', height: 2, backgroundColor: '#943126',marginLeft:'11%',marginBottom:2 }} />
   </TouchableOpacity>
@@ -395,7 +407,7 @@ renderItem={({ item}) => (
     {item.route.map((v) => (
 
       <>
-<TouchableOpacity>
+<TouchableOpacity onPress={()=> navigation.navigate('ArriverTime',{'busdata':v})}>
   <View style={styles.innerlistt}>
   <FontAweasome name="street-view" color="black"  size={27} style={{margin:2}} />
         <Text style={{fontSize:17}}>Start: {v.To}</Text>
@@ -431,6 +443,8 @@ renderItem={({ item}) => (
 
 
     </ImageBackground>
+</View>
+}
 </View>
 
 );
@@ -518,8 +532,8 @@ header:{
                // alignItems:'center',
                 backgroundColor: '#FBFCFC',         
                 borderRadius:15,
-                width:'90%',
-                marginLeft:"5%",
+                width:'97%',
+                marginLeft:"1.3%",
                 marginTop:3,
                 marginBottom:3,
 
@@ -557,6 +571,16 @@ header:{
               color:'#fff',
             borderRadius:8,
             marginEnd:3
+          },
+
+          laoderstyle:{
+          height:'100%',
+          width:'100%',
+          alignItems:'center',
+          justifyContent:"center",
+          backgroundColor:'#D6DBDF'
+          
+          
           }
 
 

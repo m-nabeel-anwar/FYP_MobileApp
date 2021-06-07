@@ -6,7 +6,8 @@ import { Marker } from 'react-native-maps';
  import Geolocation from '@react-native-community/geolocation';
  import axios from 'axios'
  import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+ import AsyncStorage from '@react-native-community/async-storage';
+ 
     const Profile = ({route,navigation})=>
 {
 
@@ -17,6 +18,7 @@ import { Marker } from 'react-native-maps';
 
  const data=route.params
 
+ const driverid= AsyncStorage.getItem('uid'); //change
 useEffect(()=>{
 
 
@@ -36,6 +38,7 @@ const Speed=parseFloat(position.coords.speed)
       Speed:Speed,
       BusName:data.BusName,
       NumberPlate:data.NumberPlate,
+      Driverid:driverid // change
     }
 
 
@@ -77,7 +80,7 @@ clearInterval(watchId)
 
  const checkdata=(currentdata)=>
 {
-  console.log(currentdata)
+  //console.log(currentdata)
 
   // console.log(Lat)
  

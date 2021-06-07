@@ -71,7 +71,6 @@ const App: () => React$Node = () => {
     <Stack.Navigator>
     
     
-    <Stack.Screen name="salary" component={salary} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center'}}/>
 
 
     
@@ -88,6 +87,9 @@ const App: () => React$Node = () => {
       
       <Stack.Screen name="Map" component={MapRoute} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center'}}/>
       {/* <Stack.Screen name="Varification" component={VarificationScreen}/> */}
+
+    <Stack.Screen name="salary" component={salary} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center'}}/>
+
 
     </Stack.Navigator>
 

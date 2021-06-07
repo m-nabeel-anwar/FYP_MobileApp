@@ -42,6 +42,9 @@ import FindBus from './Screen/FindBus';
 import Routs from './Screen/Routs';
 import Profile from './Screen/Profile';
 import UpdateProfile from './Screen/UpdateProfile';
+
+import ArriverTime from './Screen/ArriverTime';
+
 import { AsyncStorage } from 'react-native';
 import List from './Screen/List';
 
@@ -157,7 +160,7 @@ componentDidMount()
 <Stack.Navigator >
         {/* <Stack.Screen name="List" component={List} /> */}
        
-       
+        {/* <Stack.Screen name="ArriverTime" component={ArriverTime} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/> */}
 
         <Stack.Screen name="Splash" component={SplashScreen}  options={{headerShown: false}}/>
         <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown: false}}/>
@@ -168,6 +171,11 @@ componentDidMount()
       <Stack.Navigator> */}
         <Stack.Screen name="Home" component={Home} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
         <Stack.Screen name="FindBus" component={FindBus} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
+        
+        
+        
+        
+        
         {/* <Stack.Screen name="FindRoute" component={FindRoute} />  */}
         <Stack.Screen name="Routs" component={Routs} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>        
         <Stack.Screen name="Feed" component={FeedBack} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
@@ -178,6 +186,11 @@ componentDidMount()
   
         <Stack.Screen name="Profile" component={Profile} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
+
+        <Stack.Screen name="ArriverTime" component={ArriverTime} options={{headerRight:()=>(<Image style={{width: 40, height: 40,marginEnd: 235}} source={require('./Images/Logo.png')}/>),headerTitle: 'Bus Arriver',headerTitleAlign:'center',headerTintColor:'#BDC3C7'}}/>
+
+
+
 </Stack.Navigator>
 {/* } */}
       
@@ -237,6 +250,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
+
+// for clean
+//cd android &&./gradlew clean
+//cd android && ./gradlew clean && ./gradlew :app:bundleRelease
 
 // export default App;
 

@@ -6,21 +6,25 @@ import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import {ActivityIndicator} from 'react-native';
 const Profile = ({route,navigation})=>
 {
     const{uid}=route.params
 
     const [data,setdata]=useState({Name:'',Cnic:'',Email:'',Contact:''})
-
+    const[loading,isloading]=useState(true)
+    const [loadingerror,setloadingerror]=useState("Loading...")
     useEffect(()=>{
         axios.get('http://127.0.0.1:8000/getuserdetail?uid='+uid)
         .then(res=>{
            
             setdata(res.data)
+            isloading(false)
           
         })
         .catch(err=>{
+            isloading(true)
+            setloadingerror("Network Error...")
             console.log(err)
         })
         
@@ -30,6 +34,13 @@ const Profile = ({route,navigation})=>
 
  
     return(
+        <View style={{flex:1}}>
+        { loading ?  
+      
+      <View  style={styles.laoderstyle}>
+          <ActivityIndicator size='large' width='90%' color='black'/>
+          <Text style={{fontSize:25,color:'#515A5A'}} >{loadingerror}</Text>
+      </View>:
 <View style={styles.container}>
 
 <View style={styles.header}>
@@ -118,6 +129,9 @@ const Profile = ({route,navigation})=>
                           </TouchableOpacity>
 </ScrollView>
 </Animatable.View>
+
+</View>
+}
 
 </View>
 
@@ -256,6 +270,15 @@ roundmidbox:
     marginTop:-70,
     borderColor:'green',
     borderWidth:2
+},
+laoderstyle:{
+height:'100%',
+width:'100%',
+alignItems:'center',
+justifyContent:"center",
+backgroundColor:'#D6DBDF'
+
+
 }
 
 

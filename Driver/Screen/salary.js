@@ -12,14 +12,44 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import FontAweasome from 'react-native-vector-icons/FontAwesome';
-const salary = ({navigation}) =>
+import axios from 'axios'
+const salary = ({route,navigation}) =>
 {
 
-const [date,setdate]=useState('2/2/2021')
+const [data,setdata]=useState({})
+
+const { uid} = route.params;
   
+// format data   2021-02-24
+
+
+const getsalary_info=(date)=>
+{
+
+    // console.log(uid+" "+ date)
+    const Driverid=uid;
+    const Date=date
+    const data={
+        Driverid,Date
+
+    }
+
+    axios.post('http://127.0.0.1:8000/getsalarybydate',data)
+    .then(res=>{ setdata(res.data)
+    
+    // console.log(res.data)
+    })
+    .catch(err=>{console.log(err)})
+
+
+}
+
+
         return (
             <View style={styless.container}>
-               <Calendar/>
+               <Calendar    onDayPress={(day) => {getsalary_info(day.dateString)}}/>
+
+
 <View style={styless.salarybox}>
     <Text style={styless.salaryheader}>Per Day Salary</Text>
     <View style={styless.inersalarybox}>
@@ -27,22 +57,29 @@ const [date,setdate]=useState('2/2/2021')
         <View style={styless.inersalaryboxdata}>
             <View style={styless.sigledata}>
         <FontAweasome name="calendar" color="#05375a"  size={25}/>
-            <Text style={styless.datastyle}>Date: {date}</Text>
+            <Text style={styless.datastyle}>Date: {data.Date}</Text>
+            </View>
+            <View style={styless.sigledata}>
+
+        <FontAweasome name="calendar" color="#05375a"  size={25}/>
+            <Text style={styless.datastyle}>Paydate: {data.Paydate}</Text>
             </View>
 
             <View style={styless.sigledata}>
-        <FontAweasome name="history" color="#05375a"  size={27}/>
-            <Text style={styless.datastyle}>Duration: 2.33.222</Text>
+        <FontAweasome name="history" color="#05375a"  size={25}/>
+            <Text style={styless.datastyle}>Duration (Hr.): {data.Duratin}</Text>
             </View>
             <View style={styless.sigledata}>
         <FontAweasome name="credit-card" color="#05375a"  size={25}/>
-            <Text style={styless.datastyle}>Salary: 30000</Text>
+            <Text style={styless.datastyle}>Salary (Rs.): {data.Salary}</Text>
             </View>
 
             <View style={styless.sigledata}>
         <FontAweasome name="question-circle" color="#05375a"  size={27}/>
-            <Text style={styless.datastyle}>Status: N</Text>
+            <Text style={styless.datastyle}>Assignby: {data.Assignby}</Text>
             </View>
+
+          
 
             
 
@@ -68,36 +105,40 @@ const styless= StyleSheet.create({
     },
 
     salarybox:{
-        margin:5,
+        
+        margin:8,
+        
         backgroundColor:'#BDC3C7',
-        height:220,
+        height:190,
         width:'96%',
         borderRadius:28
     },
     inersalarybox:{
         margin:7,
+        marginTop:-1,
         backgroundColor:'#4AB3FA',
-        height:230,
+        height:205,
         width:'96%',
         borderRadius:32
     },
     salaryheader:
     {
-        fontSize:22,
+        fontSize:20,
         textAlign:'center',
         alignItems:'center',
-        color:'black'
+        color:'black',
+       
     },
     inersalaryboxdata:{
      
-        margin:13,
+        margin:12,
 
     },
     datastyle:{
-        fontSize:18,
+        fontSize:16,
         color:'#ffff',
         marginLeft:11,
-        marginBottom:4
+        marginBottom:3
         
 
 
@@ -106,7 +147,7 @@ const styless= StyleSheet.create({
         flexDirection:'row',
         borderBottomWidth:1,
         borderBottomColor:'#ABEBC6',
-        marginBottom:17,
+        marginBottom:10,
 
    }
 })
